@@ -1,0 +1,150 @@
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css';
+@import 'nativewind/theme';
+
+@theme {
+  --color-primary: var(--theme-primary);
+  --color-primaryLight: var(--theme-primaryLight);
+
+  --color-background: var(--theme-background);
+  --color-card: var(--theme-card);
+  --color-cardSecondary: var(--theme-cardSecondary);
+  --color-cardTertiary: var(--theme-cardTertiary);
+  --color-white: #ffffff;
+
+  --color-text: var(--theme-text);
+  --color-textSecondary: var(--theme-textSecondary);
+  --color-textTertiary: var(--theme-textTertiary);
+  --color-textMuted: var(--theme-textMuted);
+  --color-textPlaceholder: var(--theme-textPlaceholder);
+  --color-textSubtle: var(--theme-textSubtle);
+  --color-textIcon: var(--theme-textIcon);
+
+  --color-textHeading: var(--theme-textHeading);
+  --color-textLabel: var(--theme-textLabel);
+
+  --color-border: var(--theme-border);
+  --color-borderSecondary: var(--theme-borderSecondary);
+  --color-borderLight: var(--theme-borderLight);
+  --color-borderAuth: var(--theme-borderAuth);
+
+  --color-success: #10b981;
+  --color-successDark: #047857;
+  --color-successBackground: #d1fae5;
+
+  --color-warning: #f59e0b;
+  --color-warningBackground: #fef3c7;
+
+  --color-error: #ef4444;
+  --color-errorDark: #b91c1c;
+
+  --color-textNav: var(--theme-textNav);
+  --color-textNavMuted: var(--theme-textNavMuted);
+  --color-borderNav: var(--theme-borderNav);
+  --color-navActive: var(--theme-navActive);
+  --color-navCard: var(--theme-navCard);
+
+  --color-dashTextDk: var(--theme-dashTextDk);
+  --color-dashTokenBg: var(--theme-dashTokenBg);
+  --color-dashTokenText: var(--theme-dashTokenText);
+  --color-insightBg: var(--theme-insightBg);
+  --color-insightBorder: var(--theme-insightBorder);
+  --color-insightTextMuted: var(--theme-insightTextMuted);
+  --color-insightDashed: var(--theme-insightDashed);
+  --color-insightBorderAccent: var(--theme-insightBorderAccent);
+  --color-insightIconBg1: var(--theme-insightIconBg1);
+  --color-insightIconText1: var(--theme-insightIconText1);
+  --color-insightIconBg2: var(--theme-insightIconBg2);
+  --color-insightIconText2: var(--theme-insightIconText2);
+}
+
+:root {
+  --theme-primary: #6d5efc;
+  --theme-primaryLight: #8b7eff;
+
+  --theme-background: #f8fafc;
+  --theme-card: #ffffff;
+  --theme-cardSecondary: #f1f5f9;
+  --theme-cardTertiary: #e2e8f0;
+
+  --theme-text: #0f172a;
+  --theme-textSecondary: #1e293b;
+  --theme-textTertiary: #475569;
+  --theme-textMuted: #64748b;
+  --theme-textPlaceholder: #94a3b8;
+  --theme-textSubtle: #cbd5e1;
+  --theme-textIcon: #64748b;
+
+  --theme-textHeading: #0f172a;
+  --theme-textLabel: #334155;
+
+  --theme-border: #e2e8f0;
+  --theme-borderSecondary: #cbd5e1;
+  --theme-borderLight: #f1f5f9;
+  --theme-borderAuth: #d0d5dd;
+
+  --theme-textNav: #0f172a;
+  --theme-textNavMuted: #64748b;
+  --theme-borderNav: #e2e8f0;
+  --theme-navActive: #ddd6fe;
+  --theme-navCard: #f8fafc;
+
+  --theme-dashTextDk: #4c1d95;
+  --theme-dashTokenBg: #fde68a;
+  --theme-dashTokenText: #92400e;
+  --theme-insightBg: #f5f3ff;
+  --theme-insightBorder: #e9d5ff;
+  --theme-insightTextMuted: #6b7280;
+  --theme-insightDashed: #ddd6fe;
+  --theme-insightBorderAccent: #c4b5fd;
+  --theme-insightIconBg1: #ede9fe;
+  --theme-insightIconText1: #5b21b6;
+  --theme-insightIconBg2: #d1fae5;
+  --theme-insightIconText2: #047857;
+}
+
+.dark {
+  --theme-primary: #8b7eff;
+  --theme-primaryLight: #a594ff;
+
+  --theme-background: #0b0d12;
+  --theme-card: #13161e;
+  --theme-cardSecondary: #1a1e28;
+  --theme-cardTertiary: #232834;
+
+  --theme-text: #f8fafc;
+  --theme-textSecondary: #e2e8f0;
+  --theme-textTertiary: #cbd5e1;
+  --theme-textMuted: #94a3b8;
+  --theme-textPlaceholder: #64748b;
+  --theme-textSubtle: #475569;
+  --theme-textIcon: #94a3b8;
+
+  --theme-textHeading: #f8fafc;
+  --theme-textLabel: #cbd5e1;
+
+  --theme-border: #232834;
+  --theme-borderSecondary: #2d3340;
+  --theme-borderLight: #1a1e28;
+  --theme-borderAuth: #2d3340;
+
+  --theme-textNav: #f8fafc;
+  --theme-textNavMuted: #94a3b8;
+  --theme-borderNav: #2d3340;
+  --theme-navActive: #3b2a6b;
+  --theme-navCard: #13161e;
+
+  --theme-dashTextDk: #c4b5fd;
+  --theme-dashTokenBg: #3b2a6b;
+  --theme-dashTokenText: #ddd6fe;
+  --theme-insightBg: #1a1726;
+  --theme-insightBorder: #2d2540;
+  --theme-insightTextMuted: #94a3b8;
+  --theme-insightDashed: #3b3352;
+  --theme-insightBorderAccent: #5b4e80;
+  --theme-insightIconBg1: #2d2540;
+  --theme-insightIconText1: #c4b5fd;
+  --theme-insightIconBg2: #0c2e23;
+  --theme-insightIconText2: #6ee7b7;
+}
