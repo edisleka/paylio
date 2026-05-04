@@ -1,9 +1,9 @@
 import { type BottomTabBarProps } from '@react-navigation/bottom-tabs'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useWindowDimensions } from 'react-native'
 import {
   Easing,
-  useSharedValue,
+  useDerivedValue,
   withTiming,
 } from 'react-native-reanimated'
 
@@ -19,6 +19,11 @@ import {
 
 const PADDING_X_TOTAL = TAB_BAR_PADDING_X * 2
 
+const INDICATOR_TIMING_CONFIG = {
+  duration: INDICATOR_ANIMATION_DURATION,
+  easing: Easing.out(Easing.cubic),
+}
+
 export function CustomTabBar({
   navigation,
   state,
@@ -30,14 +35,9 @@ export function CustomTabBar({
     Math.max(0, windowWidth - TAB_BAR_HORIZONTAL_MARGIN * 2),
   )
 
-  const activeIndex = useSharedValue(state.index)
-
-  useEffect(() => {
-    activeIndex.value = withTiming(state.index, {
-      duration: INDICATOR_ANIMATION_DURATION,
-      easing: Easing.out(Easing.cubic),
-    })
-  }, [activeIndex, state.index])
+  const activeIndex = useDerivedValue(() =>
+    withTiming(state.index, INDICATOR_TIMING_CONFIG),
+  )
 
   const innerWidth = Math.max(0, tabBarWidth - PADDING_X_TOTAL)
   const tabWidth = innerWidth / state.routes.length
