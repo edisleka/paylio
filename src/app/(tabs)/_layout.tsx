@@ -114,7 +114,7 @@ function TabItem({
       onPress={onPress}
       onLongPress={onLongPress}
       accessibilityRole='tab'
-      accessibilityState={isFocused ? { selected: true } : {}}
+      accessibilityState={{ selected: isFocused }}
       accessibilityLabel={accessibilityLabel}
       testID={testID}
       // android_ripple={{ color: 'rgba(255, 255, 255, 0.1)' }}
