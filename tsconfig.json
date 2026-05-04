@@ -5,15 +5,12 @@
     "module": "ESNext",
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/root/*": [
-        "./*"
-      ],
-      "@/assets/*": [
-        "./assets/*"
-      ]
+      "@/*": ["./src/*"],
+      "@/root/*": ["./*"],
+      "@/assets/*": ["./assets/*"],
+      "@/constants/*": ["./src/constants/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/components/*": ["./src/components/*"]
     }
   },
   "include": [
