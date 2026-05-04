@@ -1,10 +1,10 @@
 import { COLORS } from '@/constants/theme'
 import { Feather } from '@expo/vector-icons'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
-import { BlurView } from 'expo-blur'
+import { BlurTargetView, BlurView } from 'expo-blur'
 import { Tabs } from 'expo-router'
-import { useEffect, useState } from 'react'
-import { Pressable } from 'react-native'
+import { RefObject, useEffect, useRef, useState } from 'react'
+import { Pressable, View } from 'react-native'
 import Animated, {
   Easing,
   SharedValue,
@@ -65,11 +65,17 @@ function TabItem({
   iconName,
   isFocused,
   onPress,
+  onLongPress,
+  accessibilityLabel,
+  testID,
   tabWidth,
 }: {
   iconName: IconName
   isFocused: boolean
   onPress: () => void
+  onLongPress: () => void
+  accessibilityLabel?: string
+  testID?: string
   tabWidth: number
 }) {
   const iconScale = useSharedValue(isFocused ? 1.2 : 1)
@@ -106,6 +112,11 @@ function TabItem({
   return (
     <Pressable
       onPress={onPress}
+      onLongPress={onLongPress}
+      accessibilityRole='tab'
+      accessibilityState={isFocused ? { selected: true } : {}}
+      accessibilityLabel={accessibilityLabel}
+      testID={testID}
       // android_ripple={{ color: 'rgba(255, 255, 255, 0.1)' }}
       style={{
         width: tabWidth,
@@ -126,7 +137,15 @@ function TabItem({
 }
 
 // Wrapping global tabbar routing override smoothly
-const CustomTabBar = ({ navigation, state }: BottomTabBarProps) => {
+const CustomTabBar = ({
+  navigation,
+  state,
+  descriptors,
+  insets,
+  blurTargetRef,
+}: BottomTabBarProps & {
+  blurTargetRef: RefObject<View | null>
+}) => {
   const [tabBarWidth, setTabBarWidth] = useState(0)
   const activeIndex = useSharedValue(state.index)
 
@@ -141,10 +160,12 @@ const CustomTabBar = ({ navigation, state }: BottomTabBarProps) => {
     <BlurView
       intensity={85}
       tint='dark'
+      blurTarget={blurTargetRef}
+      blurMethod='dimezisBlurView'
       onLayout={({ nativeEvent }) => setTabBarWidth(nativeEvent.layout.width)}
       style={{
         position: 'absolute',
-        bottom: 24,
+        bottom: Math.max(insets.bottom, 24),
         left: 20,
         right: 20,
         borderRadius: 40,
@@ -169,6 +190,7 @@ const CustomTabBar = ({ navigation, state }: BottomTabBarProps) => {
       )}
 
       {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key]
         const isFocused = state.index === index
         const onPress = () => {
           const event = navigation.emit({
@@ -182,6 +204,13 @@ const CustomTabBar = ({ navigation, state }: BottomTabBarProps) => {
           }
         }
 
+        const onLongPress = () => {
+          navigation.emit({
+            type: 'tabLongPress',
+            target: route.key,
+          })
+        }
+
         const iconName = ICON_MAP[route.name] || 'settings'
         const innerWidth =
           tabBarWidth > 0 ? (tabBarWidth - 16) / state.routes.length : 0
@@ -192,6 +221,9 @@ const CustomTabBar = ({ navigation, state }: BottomTabBarProps) => {
             iconName={iconName}
             isFocused={isFocused}
             onPress={onPress}
+            onLongPress={onLongPress}
+            accessibilityLabel={options.tabBarAccessibilityLabel}
+            testID={options.tabBarButtonTestID}
             tabWidth={innerWidth}
           />
         )
@@ -201,15 +233,21 @@ const CustomTabBar = ({ navigation, state }: BottomTabBarProps) => {
 }
 
 export default function TabsLayout() {
+  const blurTargetRef = useRef<View | null>(null)
+
   return (
-    <Tabs
-      screenOptions={{ headerShown: false }}
-      tabBar={(props) => <CustomTabBar {...props} />}
-    >
-      <Tabs.Screen name='home' options={{ title: 'Home' }} />
-      <Tabs.Screen name='dashboard' options={{ title: 'Dashboard' }} />
-      <Tabs.Screen name='insights' options={{ title: 'Insights' }} />
-      <Tabs.Screen name='subscription' options={{ title: 'Subscription' }} />
-    </Tabs>
+    <BlurTargetView ref={blurTargetRef} style={{ flex: 1 }}>
+      <Tabs
+        screenOptions={{ headerShown: false }}
+        tabBar={(props) => (
+          <CustomTabBar {...props} blurTargetRef={blurTargetRef} />
+        )}
+      >
+        <Tabs.Screen name='home' options={{ title: 'Home' }} />
+        <Tabs.Screen name='dashboard' options={{ title: 'Dashboard' }} />
+        <Tabs.Screen name='insights' options={{ title: 'Insights' }} />
+        <Tabs.Screen name='subscription' options={{ title: 'Subscription' }} />
+      </Tabs>
+    </BlurTargetView>
   )
 }
