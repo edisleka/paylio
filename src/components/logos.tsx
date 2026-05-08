@@ -286,7 +286,7 @@ export const HuluLogo = ({ size = 28 }: { size?: number }) => (
   <Svg width={size} height={size} viewBox='0 0 24 24' fill='none'>
     <Rect width={24} height={24} rx={4} fill='#1CE783' />
     <Path
-      d='M6 10V18M6 10H10V18M14 10V1818 10V18H14'
+      d='M6 10V18 M6 10H10V18 M14 10V18 M18 10V18H14'
       stroke='#000'
       strokeWidth='2'
     />

@@ -174,20 +174,24 @@ const [date, setDate] = useState(new Date());
 
 ## Stepper
 
-Increment/decrement numeric values.
+Increment/decrement numeric values. iOS-only SwiftUI control. Install with `npx expo install @expo/ui` (requires a native rebuild).
 
 ```tsx
-import { Stepper } from "react-native";
+import { Host, Stepper } from "@expo/ui/swift-ui";
 import { useState } from "react";
 
 const [count, setCount] = useState(0);
 
-<Stepper
-  value={count}
-  onValueChange={setCount}
-  minimumValue={0}
-  maximumValue={10}
-/>;
+<Host matchContents>
+  <Stepper
+    label="Count"
+    value={count}
+    onValueChange={setCount}
+    min={0}
+    max={10}
+    step={1}
+  />
+</Host>;
 ```
 
 ## TextInput
