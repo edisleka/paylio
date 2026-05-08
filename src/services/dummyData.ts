@@ -27,7 +27,7 @@ import {
   TidalLogo,
   TwitchLogo,
   YouTubeLogo,
-} from '@/components/Logos'
+} from '@/components/logos'
 import { Notification, Subscription } from '@/types/dummyData.types'
 
 export const NOTIFICATIONS: Notification[] = [
