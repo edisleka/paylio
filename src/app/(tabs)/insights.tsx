@@ -17,7 +17,7 @@ const InsightsScreen = () => {
     { day: 'Tue', value: 31, height: 'h-28', color: 'bg-text' },
     { day: 'Wed', value: 23, height: 'h-20', color: 'bg-text' },
     {
-      day: 'Thr',
+      day: 'Thu',
       value: 40,
       height: 'h-40',
       color: 'bg-primary',
@@ -74,7 +74,7 @@ const InsightsScreen = () => {
                     >
                       {val}
                     </ThemedText>
-                    <View className='flex-1 border-t obrder-dashed border-insightDashed ml-2' />
+                    <View className='flex-1 border-t border-dashed border-insightDashed ml-2 will-change-variable' />
                   </View>
                 ))}
               </View>
