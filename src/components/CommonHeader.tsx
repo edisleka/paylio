@@ -35,6 +35,10 @@ const CommonHeader = ({
       <View className='flex-row items-center gap-3'>
         {showBack && (
           <TouchableOpacity
+            accessibilityRole='button'
+            accessibilityLabel='Go back'
+            accessibilityHint='Navigates to the previous screen'
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             activeOpacity={0.7}
             onPress={handleBack}
             className='-ml-2 p-2'

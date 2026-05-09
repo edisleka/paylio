@@ -54,7 +54,10 @@ export default function ItemDetails() {
           Subscription not found
         </ThemedText>
         <Pressable
-          onPress={() => router.back()}
+          onPress={() => {
+            if (router.canGoBack()) router.back()
+            else router.replace('/')
+          }}
           className='mt-4 px-5 py-3 bg-primary rounded-md'
         >
           <ThemedText variant='body' className='font-semibold text-white'>
