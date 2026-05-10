@@ -1,4 +1,3 @@
-import { AnimatedCard } from '@/components/Card'
 import CommonHeader from '@/components/CommonHeader'
 import ThemedText from '@/components/ThemedText'
 import { ANIMATION } from '@/constants/animations'
@@ -9,12 +8,7 @@ import Feather from '@expo/vector-icons/Feather'
 import { useRouter } from 'expo-router'
 import { styled } from 'nativewind'
 import { useMemo, useState } from 'react'
-import {
-  FlatList,
-  Pressable,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { FlatList, Pressable, TouchableOpacity, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { SafeAreaView as RNFSafeAreaView } from 'react-native-safe-area-context'
 
@@ -39,8 +33,14 @@ const startOfDay = (d: Date) => {
   return copy
 }
 
+const parseBillingDate = (value: string) => {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value)
+  if (m) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]))
+  return new Date(value)
+}
+
 const formatBillingDate = (iso: string) =>
-  new Date(iso).toLocaleDateString(undefined, {
+  parseBillingDate(iso).toLocaleDateString(undefined, {
     weekday: 'short',
     month: 'short',
     day: 'numeric',
@@ -54,9 +54,15 @@ const getDayLabel = (days: number) => {
 }
 
 const getAccent = (days: number) => {
-  if (days <= 3) return { bg: '#FEE2E2', fg: COLORS.errorDark, label: 'Due soon' }
-  if (days <= 14) return { bg: COLORS.warningBackground, fg: '#92400E', label: 'Upcoming' }
-  return { bg: COLORS.successBackground, fg: COLORS.successDark, label: 'Scheduled' }
+  if (days <= 3)
+    return { bg: '#FEE2E2', fg: COLORS.errorDark, label: 'Due soon' }
+  if (days <= 14)
+    return { bg: COLORS.warningBackground, fg: '#92400E', label: 'Upcoming' }
+  return {
+    bg: COLORS.successBackground,
+    fg: COLORS.successDark,
+    label: 'Scheduled',
+  }
 }
 
 export default function Upcoming() {
@@ -70,7 +76,7 @@ export default function Upcoming() {
     return all
       .filter((s) => s.status !== 'cancelled')
       .map((s) => {
-        const billing = startOfDay(new Date(s.nextBillingDate))
+        const billing = startOfDay(parseBillingDate(s.nextBillingDate))
         const diffMs = billing.getTime() - today.getTime()
         const daysLeft = Math.round(diffMs / (1000 * 60 * 60 * 24))
         return { ...s, daysLeft }
@@ -94,10 +100,7 @@ export default function Upcoming() {
 
   const stats = useMemo(() => {
     const monthSubs = upcoming.filter((s) => s.daysLeft <= 30)
-    const monthTotal = monthSubs.reduce((sum, s) => {
-      const monthly = s.billingCycle === 'yearly' ? s.price / 12 : s.price
-      return sum + monthly
-    }, 0)
+    const monthTotal = monthSubs.reduce((sum, s) => sum + s.price, 0)
     const next = upcoming[0]
     return {
       monthTotal,
@@ -155,11 +158,7 @@ export default function Upcoming() {
               {stats.nextSub.Logo ? (
                 <stats.nextSub.Logo size={22} />
               ) : (
-                <Feather
-                  name='zap'
-                  size={18}
-                  color={COLORS.white}
-                />
+                <Feather name='zap' size={18} color={COLORS.white} />
               )}
             </View>
             <View className='flex-1'>
@@ -258,11 +257,7 @@ export default function Upcoming() {
             {item.Logo ? (
               <item.Logo size={28} />
             ) : (
-              <Feather
-                name={item.icon as any}
-                size={24}
-                color={COLORS.text}
-              />
+              <Feather name={item.icon as any} size={24} color={COLORS.text} />
             )}
           </View>
 
@@ -276,11 +271,7 @@ export default function Upcoming() {
               {item.name}
             </ThemedText>
             <View className='flex-row items-center mt-1 gap-1.5'>
-              <Feather
-                name='calendar'
-                size={11}
-                color={COLORS.textMuted}
-              />
+              <Feather name='calendar' size={11} color={COLORS.textMuted} />
               <ThemedText variant='caption' color='muted'>
                 {formatBillingDate(item.nextBillingDate)}
               </ThemedText>
@@ -343,7 +334,11 @@ export default function Upcoming() {
       className='flex-1'
       style={{ backgroundColor: COLORS.background }}
     >
-      <CommonHeader title='Upcoming' showNotification={false} showAvatar={false} />
+      <CommonHeader
+        title='Upcoming'
+        showNotification={false}
+        showAvatar={false}
+      />
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.id}
